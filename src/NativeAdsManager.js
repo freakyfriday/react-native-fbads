@@ -15,6 +15,7 @@ const { CTKNativeAdManager } = NativeModules;
 
 const EVENT_DID_BECOME_VALID = 'AdsManagerDidBecomeValid';
 const EVENT_DID_BECOME_INVALID = 'AdsManagerDidBecomeInvalid';
+const AD_MANAGER_ERROR = 'AdsManagerError';
 
 type AdManagerCachePolicy = 'none' | 'icon' | 'image' | 'all';
 
@@ -64,6 +65,11 @@ class NativeAdsManager {
 
         this.isValid = isValidNew;
       }
+    });
+    
+    NativeAppEventEmitter.addListener('CTKNativeAdsManagersError', (error) => {
+      this.lastError = error;
+      this.eventEmitter.emit(AD_MANAGER_ERROR, error);
     });
   }
 
